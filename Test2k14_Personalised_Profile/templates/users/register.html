@@ -1,0 +1,148 @@
+{% load staticfiles %}
+{% load dajaxice_templatetags %}
+
+<html>
+<head>
+
+
+<script src="{%static 'js/jquery-1.9.1.js'%}"></script>
+
+
+
+{% dajaxice_js_import %}
+
+<script>
+$(document).ready(function(){
+    $("#opt1").hide();
+    $("#opt2").hide();
+    $("#opt3").hide();
+	$("#coll_submit").click(function(){
+	    $("#opt1").show();
+	})
+	$("#next1").click(function(){
+	    $(self).hide()
+	    if ($("#text1")[0].value){
+	    $("#opt2").show();
+	    }
+	})
+	$("#next2").click(function(){
+	    $(self).hide()
+	    if ($("#text2")[0].value){
+	    $("#opt3").show();
+	    }
+	})
+	$("#submit").click(function(){  
+	    if($("#text3")[0].value){
+	    coll_name = $("#text1")[0].value+','+$("#text2")[0].value+','+$("#text3")[0].value
+        $("#id_college option").removeAttr("selected");
+        $("#id_college").html('<option value="'+coll_name+'" selected="selected">'+coll_name+'</option>'+$('#id_college').html());
+        }        
+	})
+	});
+function callback(data){
+    $("#college").html(data['col']);
+    alert(data.message);
+}
+function hide(){
+
+
+}
+</script>
+<title>Shaastra - Register</title>
+<body>
+
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+    {% endif %}
+<form action="." method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.first_name.errors }}
+        <label for="first_name">First Name :</label>
+        {{ form.first_name }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.last_name.errors }}
+        <label for="last_name">Last Name  :</label>
+        {{ form.last_name }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.username.errors }}
+        <label for="username">User Name  :</label>
+        {{ form.username }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.password.errors }}
+        <label for="password">Password : </label>
+        {{ form.password }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.password_again.errors }}
+        <label for="password_again">Password Again:</label>
+        {{ form.password_again }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.gender.errors }}
+        <label for="gender">Gender :</label>
+        {{ form.gender }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.age.errors }}
+        <label for="age">Age :</label>
+        {{ form.age }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.email.errors }}
+        <label for="email">EMAIL ID :</label>
+        {{ form.email }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.college_roll.errors }}
+        <label for="college_roll">College Rollno:</label>
+        {{ form.college_roll}}
+        
+    </div>
+    <div class="fieldWrapper" id="college">
+        {{ form.college.errors }}
+        <label for="college">College :</label>
+        {{ form.college}}
+    </div>
+    <div id="click here">
+    <input type="button" id="coll_submit" onclick="" value="Click here if your college is not listed">
+    </div>
+    <div id="if_clicked">
+    
+    <div id="opt1">
+    College: <input type="text" id="text1" />
+    <input type="button" id="next1" value="next"/>
+    </div>
+    <div id="opt2">
+    City: <input type="text"id="text2"/>
+    <input type="button" id="next2" value="next"/>
+    </div>
+    <div id="opt3">
+    State: <input type="text" id="text3"/>
+    <input type="button" value="Save" id=submit></button>
+    </div>
+    <!--<input type="button" value="Save" onclick="Dajaxice.users.alerter(callback,{'text1':$('#text1').val(),'text2':$('#text2').val(),'text3':$('#text3').val()})"></button>-->
+    </div>
+    <div class="coll_text"></div>
+    <div class="fieldWrapper">
+        {{ form.mobile_number.errors }}
+        <label for="mobile_number">Mobile number :</label>
+        {{ form.mobile_number }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.want_accomodation.errors }}
+        <label for="first_name">Want Accomodation :</label>
+        {{ form.want_accomodation  }}
+    </div>
+    <div id = "middle_center">
+        <p id="error">{{msg}}</p> 
+    <p><input type="submit" value="Register" /></p><br>
+    <a href="/user/login/">Click here to login</a>
+</form>
+</body>
+</html>
